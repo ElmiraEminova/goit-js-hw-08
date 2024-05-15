@@ -64,6 +64,36 @@ const images = [
   },
 ];
 
-const markup = images.reduce(html, image) {
-    
-}
+const imageGallery = document.querySelector(".gallery");
+
+const markup = images.reduce((html, image) => {
+  return (html += `<li class="gallery-item">
+  <a class="gallery-link" href="${image.original}">
+    <img
+      class="gallery-image"
+      src="${image.preview}"
+      data-source="${image.original}"
+      alt="${image.description}"
+    />
+  </a>
+</li>`);
+}, ``);
+
+imageGallery.insertAdjacentHTML("beforeend", markup);
+
+imageGallery.addEventListener("click", (event) => {
+  event.preventDefault(); 
+  if (event.target === event.currentTarget) return;
+
+  const targetImageSrc = event.target.dataset.source;
+  const targetImageAlt = event.target.alt;
+
+  const instance = basicLightbox.create(`
+    <img
+     src="${targetImageSrc}"
+      alt="${targetImageAlt}"
+    />
+  `);
+  
+  instance.show();
+});
